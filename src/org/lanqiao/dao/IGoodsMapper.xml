@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lanqiao.dao.IGoodsMapper">
+	<select id="findShelvesAll" parameterType="java.lang.Integer" resultType="Goods">
+	<![CDATA[
+		SELECT goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand 
+		FROM (SELECT ROWNUM rn,goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand,gooflag 
+				FROM goods 
+				WHERE ROWNUM<=#{param1} AND gooflag = '0') temp 
+		WHERE temp.rn>#{param2}  
+	]]>	
+	</select>
+	
+	<select id="fingfindShelvesByColume" parameterType="java.util.Map" resultType="Goods">
+	<![CDATA[
+		SELECT goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand 
+		FROM (SELECT ROWNUM rn,goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand,gooflag 
+				FROM goods 
+				WHERE ROWNUM<=#{line} AND gooflag = '0' AND (gooname LIKE '%${content}%' OR goodescribe LIKE '%${content}%' OR goocolor LIKE '%${content}%'
+		OR goosize LIKE '%${content}%' OR goobrand LIKE '%${content}%' OR TO_CHAR(gooprice) = #{content} OR TO_CHAR(goocount) = #{content}) ) temp 
+		WHERE temp.rn>#{page} 
+	]]>	
+	</select>
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT COUNT(goonum) FROM goods WHERE gooflag = '0'
+	</select>
+	<select id="getAllCountFuzzy" parameterType="Goods" resultType="java.lang.Integer">
+		SELECT COUNT(goonum) FROM goods WHERE gooflag = '0' AND (gooname LIKE '%${content}%' OR goodescribe LIKE '%${content}%' OR goocolor LIKE '%${content}%'
+		OR goosize LIKE '%${content}%' OR goobrand LIKE '%${content}%' OR TO_CHAR(gooprice) = #{content} OR TO_CHAR(goocount) = #{content})
+	</select>
+	<update id="doUpdateAndSoldOut" parameterType="java.lang.String">
+		UPDATE goods SET gooflag = '1' WHERE goonum=#{value}
+	</update>
+	<select id="findById" parameterType="Goods" resultType="Goods">
+		SELECT goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand 
+		FROM goods WHERE goonum=#{goonum}
+	</select>
+	<update id="doUpdateShelvesInfo" parameterType="Goods">
+		UPDATE goods SET goosite =#{goosite},gooprice =#{gooprice},gooname =#{gooname},goocount =#{goocount},
+		goodescribe =#{goodescribe},goocolor =#{goocolor},goosize =#{goosize},goobrand =#{goobrand}
+		WHERE goonum=#{goonum}
+	</update>
+	<insert id="doCreate" parameterType="Goods">
+		INSERT INTO goods(goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand)
+		VALUES(sys_guid(),#{goosite},#{gooprice},#{gooname},#{goocount},#{goodescribe},#{goocolor},#{goosize},#{goobrand})
+	</insert>
+	<select id="findAllSoldOut" parameterType="java.lang.Integer" resultType="Goods">
+	<![CDATA[
+		SELECT goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand 
+		FROM (SELECT ROWNUM rn,goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand,gooflag 
+				FROM goods 
+				WHERE ROWNUM<=#{param1} AND gooflag = '1') temp 
+		WHERE temp.rn>#{param2}  
+	]]>	
+	</select>
+	<select id="fingfindSoldOutByColume" parameterType="java.util.Map" resultType="Goods">
+	<![CDATA[
+		SELECT goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand 
+		FROM (SELECT ROWNUM rn,goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand,gooflag 
+				FROM goods 
+				WHERE ROWNUM<=#{line} AND gooflag = '1' AND (gooname LIKE '%${content}%' OR goodescribe LIKE '%${content}%' OR goocolor LIKE '%${content}%'
+		OR goosize LIKE '%${content}%' OR goobrand LIKE '%${content}%' OR TO_CHAR(gooprice) = #{content} OR TO_CHAR(goocount) = #{content}) ) temp 
+		WHERE temp.rn>#{page} 
+	]]>	
+	</select>
+	<select id="getAllSoidOutCount" resultType="java.lang.Integer">
+		SELECT COUNT(goonum) FROM goods WHERE gooflag = '1'
+	</select>
+	<select id="getAllSoidOutCountFuzzy" parameterType="Goods" resultType="java.lang.Integer">
+		SELECT COUNT(goonum) FROM goods WHERE gooflag = '1' AND (gooname LIKE '%${content}%' OR goodescribe LIKE '%${content}%' OR goocolor LIKE '%${content}%'
+		OR goosize LIKE '%${content}%' OR goobrand LIKE '%${content}%' OR TO_CHAR(gooprice) = #{content} OR TO_CHAR(goocount) = #{content})
+	</select>
+	<!-- 放入回收站 -->
+	<update id="doDelete" parameterType="java.lang.String">
+		UPDATE goods SET gooflag = '2' WHERE goonum=#{value}
+	</update>
+	<!-- 从新上架 -->
+	<update id="againDoUpdate" parameterType="java.lang.String">
+		UPDATE goods SET gooflag = '0' WHERE goonum=#{value}
+	</update>
+	<!-- 从回收站删除 -->
+	<delete id="doDeletePurge">
+		DELETE goods WHERE goonum=#{value} AND gooflag = '2'
+	</delete>
+	<!-- 从回收站还原 -->
+	<update id="againDoUpdatePurge" parameterType="java.lang.String">
+		UPDATE goods SET gooflag = '1' WHERE goonum=#{value}
+	</update>
+	<!-- 查看回收站全部下架商品并分页显示 -->
+	<select id="findAllSoldOutPurge" parameterType="java.lang.Integer" resultType="Goods">
+	<![CDATA[
+		SELECT goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand 
+		FROM (SELECT ROWNUM rn,goonum,goosite,gooprice,gooname,goocount,goodescribe,goocolor,goosize,goobrand,gooflag 
+				FROM goods 
+				WHERE ROWNUM<=#{param1} AND gooflag = '2') temp 
+		WHERE temp.rn>#{param2}  
+	]]>	
+	</select>
+	<select id="getAllSoidOutCountPurge" resultType="java.lang.Integer">
+		SELECT COUNT(goonum) FROM goods WHERE gooflag = '2'
+	</select>
+	<!-- 清空回收站 -->
+	<delete id="emptyPurge">
+		DELETE goods WHERE gooflag = '2'
+	</delete>
+</mapper>
+
+

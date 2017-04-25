@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lanqiao.dao.ISearchGoodsMapper">
+
+	<select id="findAllGoodsByStr" parameterType="java.util.Map" resultType="Goods">
+		<![CDATA[
+		SELECT goonum,gooprice,gooname,goocount,goosite,goodescribe,goocolor,goosize,goobrand 
+		FROM (SELECT rownum as rn,g.* FROM(SELECT * FROM goods 
+		where ((gooname like '%${string}%') or ( goodescribe like '%${string}%' ) or ( goobrand like '%${string}%' )) and gooflag = 0 )g 
+		WHERE rownum <= 20*#{pagenum})
+		WHERE rn > (20*(#{pagenum}-1))
+		]]>
+	</select>
+	<select id="findAllGoodsByStrASC" parameterType="java.util.Map" resultType="Goods">
+		<![CDATA[
+		SELECT goonum,gooprice,gooname,goocount,goosite,goodescribe,goocolor,goosize,goobrand 
+		FROM (SELECT rownum as rn,g.* FROM(SELECT * FROM goods 
+		where ((gooname like '%${string}%') or ( goodescribe like '%${string}%' ) or ( goobrand like '%${string}%' )) and gooflag = 0 )g 
+		WHERE rownum <= 20*#{pagenum})
+		WHERE rn > (20*(#{pagenum}-1)) ORDER BY gooprice ASC
+		]]>
+	</select>
+	<select id="findCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+
+		SELECT count(*) from goods where ((gooname like '%${value}%') or ( goodescribe like '%${value}%' ) or ( goobrand like '%${value}%' )) and gooflag = 0
+
+	</select>
+	
+	<select id="searchOneGood" parameterType="Goods" resultType="Goods">
+
+		SELECT goonum,gooprice,gooname,goocount,goosite,goodescribe,goocolor,goosize,goobrand 
+	    from goods where goonum=#{goonum} and gooflag = 0
+
+	</select>
+	<select id="findShoppingByAll" parameterType="Shopping"
+		resultType="Shopping">select  shoppingid,shonumber,userid,goonum from shopping where userid = #{userid} and goonum = #{goonum}</select>
+	<update id="updateGoodsToShopCar" parameterType="Shopping">update shopping set shonumber=#{shonumber} where shoppingid=#{shoppingid}</update>
+	<insert id="addGoodsToShopCar" parameterType="Shopping">
+		<selectKey resultType="java.lang.String" order="BEFORE" keyProperty="shoppingid">  
+             SELECT sys_guid() as shoppingid from DUAL  
+        </selectKey>
+		insert into shopping(shoppingid,shonumber,userid,goonum) values(#{shoppingid},#{shonumber},#{userid},#{goonum})</insert>
+	<select id="loginToShop" parameterType="UserInfo" resultType="UserInfo">
+	      SELECT password,userid,username,useremail From userinfo 
+ 			where (username=#{username} and password = #{password}) 
+ 			or (useremail = #{username} and password = #{password}) 
+ 			or (usertel = #{username} and password = #{password})
+  </select>
+    <select id="findAllgoodName" resultType="java.lang.String">
+
+		SELECT DISTINCT gooname from (SELECT gooname from goods where gooflag = 0)
+
+	</select> 
+	<select id="selectCount" parameterType="UserInfo" resultType="java.lang.Integer">
+		SELECT count(*) from shopping where userid = #{userid}
+	</select>
+</mapper>
+
+

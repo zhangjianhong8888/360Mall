@@ -1,0 +1,265 @@
+#foot,#footer{
+	width:1240px;
+	margin:0px auto;
+}
+
+#header{
+	width:100%;
+}
+
+input {
+  font:16px "microsoft yahei",Arial,Helvtica,sans-serif;
+  font-size:16px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  height: -webkit-calc(3em + 2px);
+  height: calc(3em + 2px);
+  margin: 0 0 1em;
+  padding: 1em;
+  border: 1px solid #cccccc;
+  background: #fff;
+  resize: none;
+  outline: none;
+}
+input[required]:focus {
+  font:16px "microsoft yahei",Arial,Helvtica,sans-serif;
+  font-size:16px;
+  border-color: #00bafa;
+}
+input[required]:focus + label[placeholder]:before {
+  font:16px "microsoft yahei",Arial,Helvtica,sans-serif;
+  font-size:16px;
+  color: #00bafa;
+}
+input[required]:focus + label[placeholder]:before,
+input[required]:valid + label[placeholder]:before {
+  font:16px "microsoft yahei",Arial,Helvtica,sans-serif;
+  font-size:16px;
+  -webkit-transition-duration: .2s;
+  transition-duration: .2s;
+  -webkit-transform: translate(0, -1.5em) scale(0.9, 0.9);
+  -ms-transform: translate(0, -1.5em) scale(0.9, 0.9);
+  transform: translate(0, -1.5em) scale(0.9, 0.9);
+}
+input[required]:invalid + label[placeholder][alt]:before {
+  font:16px "microsoft yahei",Arial,Helvtica,sans-serif;
+  font-size:16px;
+  content: attr(alt);
+}
+input[required] + label[placeholder] {
+  font:16px "microsoft yahei",Arial,Helvtica,sans-serif;
+  font-size:16px;
+  display: block;
+  pointer-events: none;
+  line-height: 2.3em;
+  margin-top: -webkit-calc(-3em - 2px);
+  margin-top: calc(-3em - 2px);
+  margin-bottom: -webkit-calc((3em - 1em) + 2px);
+  margin-bottom: calc((3em - 1em) + 2px);
+}
+input[required] + label[placeholder]:before {
+  font:16px "microsoft yahei",Arial,Helvtica,sans-serif;
+  font-size:16px;
+  content: attr(placeholder);
+  display: inline-block;
+  margin: 0 -webkit-calc(1em + 2px);
+  margin: 0 calc(1em + 2px);
+  padding: 5px 2px;
+  color: #898989;
+  white-space: nowrap;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ffffff));
+  background-image: -webkit-linear-gradient(top, #ffffff, #ffffff);
+  background-image: linear-gradient(to bottom, #ffffff, #ffffff);
+  -webkit-background-size: 100% 5px;
+  background-size: 100% 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd{
+	margin:0px;
+	padding:0px;
+	list-style-type:none;
+}
+body{
+	min-width: 1240px;
+}
+
+img{
+	vertical-align:middle;
+}
+
+#foot,#footer:before{
+	content:"";
+	display:table;
+}
+
+body{
+	color:#666;
+	font:12px "microsoft yahei",Arial,Helvtica,sans-serif;
+	font-size:12px;
+	background: #F6F6F6;
+}
+a{
+	text-decoration:none;
+}
+
+/* 定义左右浮动 */
+.lf{float:left;}
+.rt{float:right;}
+/* 定义清除浮动 */
+.clear{clear:both;}
+/* ************************************************************************ */
+header{
+	background: #E8E8E8;
+}
+
+header>div{
+	width:700px;
+	margin:0px auto;
+	padding:10px 0px;
+
+}
+
+header div p{
+	display:inline-block;
+	border-left:1px solid #ddd;
+	padding-left:30px;
+	margin-left:50px;
+	margin-top:10px;
+	line-height: 30px;
+	font-size:20px;
+}
+header div a{
+	color:#171717;
+}
+header div a:hover{
+	color:#78AC69;
+}
+
+header div span{
+	float:right;
+	font-size:14px;
+	line-height: 30px;
+	margin-top:10px;
+}
+
+section #main{
+	width:700px;
+	margin:60px auto;
+	background: #fff;
+	padding-bottom: 20px;
+}
+
+section #main h1{
+	text-align: center;
+	font-size: 20px;
+	padding:20px;
+	font-weight:normal;
+	border:2px solid #F6F6F6;
+}
+
+section #main #inputbox{
+	margin:0px 160px;
+}
+
+section #main #inputbox input{
+	width:338px;
+	height:42px;
+	line-height: 42px;
+	font-size: 16px;
+	color:#aaa;
+	border:1px solid #ddd;
+	border-radius: 3px;
+	padding-left:40px;
+	background: url() no-repeat 10px center;
+}
+
+
+section #main #inputbox i{
+	display: block;
+	width: 100px;
+	height:42px;
+	border:1px solid #ddd;
+	position: relative;
+	top:-88px;
+	left:277px;
+	background: url() no-repeat;
+}
+
+section #main #inputbox span{
+	display: inline-block;
+	width:380px;
+	height:40px;
+	color:#e4393c;
+	font-size: 14px;
+	line-height:40px;
+}
+
+section #main #inputbox button{
+	color: #fff;
+	width:380px;
+	height: 42px;
+	border-radius: 3px;
+	border:none;
+	background: url() repeat-x 0px -174px ;
+}
+
+section #main #inputbox button:hover{
+	background-position:  0px -43px;
+}
+section #main #inputbox p{
+	margin:20px auto;
+	text-align: center;
+}
+
+section #main #inputbox p a{
+	color: #22AC69;
+}
+
+section #main #inputbox p a:hover{
+	text-decoration: underline;
+}
+
+#foot{
+	width:400px;
+	margin:0px auto;
+	text-align: center;
+}
+#foot span{
+	margin-right:20px;
+	font-size: 14px;
+	
+}
+#foot span a{
+	color:#666;
+}
+#foot span a:hover{
+	color: #22AC69;
+}
+
+#n2{
+	border-left:1px solid #aaa;
+	padding-left:20px;
+}
+
+#footer{
+	margin:0px auto;
+	text-align:center;
+}
+#footer p{
+	font-size: 14px;
+	line-height: 30px;
+}
+
+#footer span{
+	display: inline-block;
+	width:20px;
+	height:20px;
+	background: url() no-repeat;
+}
+

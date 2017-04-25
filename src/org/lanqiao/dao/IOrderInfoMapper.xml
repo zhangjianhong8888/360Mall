@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.lanqiao.dao.IOrderInfoMapper">
+       <select id="findAllIOrderInfo" parameterType="java.util.Map" resultType="java.util.Map">       
+      		<![CDATA[
+      		SELECT b.goonum,b.goodescribe ,a.ordnumber,a.ordsite,a.orddate,a.ordmoney,a.ordpaystate,a.ordhapstate,a.ordtradstate,a.ordsize,a.ordcolor,a.ordflag
+			  FROM (SELECT RowNum rn,ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno
+			          FROM (
+			          	SELECT ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno 
+			          	FROM orderinfo o where o.userid=#{userid} and o.ordflag='0' ORDER BY o.orddate desc) 
+			         WHERE RowNum<=#{a}) a ,goods b
+			 WHERE a.goonum=b.goonum and rn>#{b} 
+       
+			 ]]>
+    </select>
+    <select id="getAllCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT COUNT(ordnumber) FROM orderinfo  WHERE userid=#{userid} and ordflag='0'
+    </select>		
+	<!-- 未付款 -->
+	 <select id="findALLIOrderInfoByOrdpaystate" parameterType="java.util.Map" resultType="java.util.Map">       
+      		<![CDATA[
+      		SELECT b.goodescribe ,a.ordnumber,a.ordsite,a.orddate,a.ordmoney,a.ordpaystate,a.ordhapstate,a.ordtradstate,a.ordsize,a.ordcolor
+			  FROM (SELECT RowNum rn,ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno
+			          FROM (
+			          	SELECT ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno 
+			          	FROM orderinfo o where o.userid=#{userid} and o.ordpaystate='未付款' and o.ordflag='0' ORDER BY o.orddate desc) 
+			         WHERE RowNum<=#{a}) a ,goods b
+			 WHERE a.goonum=b.goonum and rn>#{b}          
+			 ]]>
+    </select>
+     <select id="getAllCountpaystate" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT COUNT(ordnumber) FROM orderinfo  WHERE userid=#{userid} and ordpaystate='未付款' and ordflag='0'
+    </select>
+ 	<!-- 未发货 -->
+     <select id="findALLIOrderInfoByOrdhapstate1" parameterType="java.util.Map" resultType="java.util.Map">       
+      		
+      		<![CDATA[
+      		SELECT b.goodescribe ,a.ordnumber,a.ordsite,a.orddate,a.ordmoney,a.ordpaystate,a.ordhapstate,a.ordtradstate,a.ordsize,a.ordcolor
+			  FROM (SELECT RowNum rn,ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno
+			          FROM (
+			          	SELECT ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno 
+			          	FROM orderinfo o where o.userid=#{userid} and o.ordhapstate='未发货' and o.ordflag='0' ORDER BY o.orddate desc) 
+			         WHERE RowNum<=#{a}) a ,goods b
+			 WHERE a.goonum=b.goonum and rn>#{b}            
+			 ]]>
+    </select>
+     <select id="getAllCounthapstate1" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT COUNT(ordnumber) FROM orderinfo  WHERE userid=#{userid} and ordhapstate='未发货' and ordflag='0'
+    </select>
+    <!-- 已发货 -->
+     <select id="findALLIOrderInfoByOrdhapstate2" parameterType="java.util.Map" resultType="java.util.Map">       
+      		
+      		<![CDATA[
+      		SELECT b.goodescribe ,a.ordnumber,a.ordsite,a.orddate,a.ordmoney,a.ordpaystate,a.ordhapstate,a.ordtradstate,a.ordsize,a.ordcolor
+			  FROM (SELECT RowNum rn,ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno
+			          FROM (
+			          	SELECT ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno 
+			          	FROM orderinfo o where o.userid=#{userid} and o.ordhapstate='已发货' and o.ordflag='0' ORDER BY o.orddate desc) 
+			         WHERE RowNum<=#{a}) a ,goods b
+			 WHERE a.goonum=b.goonum and rn>#{b}            
+			 ]]>
+    </select>
+	 <select id="getAllCounthapstate2" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT COUNT(ordnumber) FROM orderinfo  WHERE userid=#{userid} and ordhapstate='已发货' and ordflag='0'
+    </select>
+	  <!-- 交易完成 -->
+     <select id="findALLIOrderInfoByOrdtradstate" parameterType="java.util.Map" resultType="java.util.Map">       
+
+      		<![CDATA[
+      		SELECT b.goodescribe ,a.ordnumber,a.ordsite,a.orddate,a.ordmoney,a.ordpaystate,a.ordhapstate,a.ordtradstate,a.ordsize,a.ordcolor
+			  FROM (SELECT RowNum rn,ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno
+			          FROM (
+			          	SELECT ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno 
+			          	FROM orderinfo o where o.userid=#{userid} and o.ordtradstate='交易完成' and o.ordflag='0' ORDER BY o.orddate desc) 
+			         WHERE RowNum<=#{a}) a ,goods b
+			 WHERE a.goonum=b.goonum and rn>=#{b}            
+			 ]]>
+    </select>
+    <select id="getAllCounttradstate" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT COUNT(ordnumber) FROM orderinfo  WHERE userid=#{userid} and ordtradstate='交易完成' and ordflag='0'
+    </select>
+    <update id="giveUpOrderInfo" parameterType="java.lang.String"> 
+    	UPDATE orderinfo SET ordtradstate = '交易取消' WHERE ordnumber = #{value}
+    </update>
+    <!-- 查询回收站数据 -->
+     <select id="findAllOrderInfoByordflag" parameterType="java.util.Map" resultType="java.util.Map">       
+      		<![CDATA[
+      		SELECT b.goonum,b.goodescribe ,a.ordnumber,a.ordsite,a.orddate,a.ordmoney,a.ordpaystate,a.ordhapstate,a.ordtradstate,a.ordsize,a.ordcolor,a.ordflag
+			  FROM (SELECT RowNum rn,ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno
+			          FROM (
+			          	SELECT ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno 
+			          	FROM orderinfo o where o.userid=#{userid} and o.ordflag='1' ORDER BY o.orddate desc) 
+			         WHERE RowNum<=#{a}) a ,goods b
+			 WHERE a.goonum=b.goonum and rn>#{b} 
+       
+			 ]]>
+    </select>
+    <select id="getAllCountPurge" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT COUNT(ordnumber) FROM orderinfo  WHERE userid=#{userid} and ordflag='1'
+    </select>	
+	<!-- 分页显示全部未付款记录 -->
+	<resultMap type="OrderInfo" id="OrderInfo_Goods_UserInfo">
+		<result column="oonr" property="ordnumber"/>
+		<result column="oode" property="orddate"/>
+		<result column="oope" property="ordpaystate"/>
+		<result column="oohe" property="ordhapstate"/>
+		<result column="oote" property="ordtradstate"/>
+		<result column="oodt" property="ordcount"/>
+		<result column="oosize" property="ordsize"/>
+		<result column="oocr" property="ordcolor"/>
+		<result column="oody" property="ordmoney"/>
+		<result column="oose" property="ordsite"/>
+		<association property="userinfo" javaType="UserInfo">
+			<id column="ousd" property="userid"/>
+			<result column="uune" property="username"/>
+		</association>
+		<association property="goods" javaType="Goods">
+			<id column="ognm" property="goonum"/>
+			<result column="ggde" property="goodescribe"/>
+		</association>
+	</resultMap>
+	<select id="findAllNoPaid" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum AND ROWNUM<=#{param1} AND o.ordpaystate = '未付款' ) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountNoPaid" resultType="java.lang.Integer">
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordpaystate = '未付款'
+	</select>
+	<!-- 分页显示全部已付款记录 -->
+	
+	<select id="findAllFinishPaid" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum AND ROWNUM<=#{param1} AND o.ordpaystate = '已付款' ) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountFinishPaid" resultType="java.lang.Integer">
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordpaystate = '已付款'
+	</select>    
+	<!-- 分页显示全部已发货记录 -->
+	
+	<select id="findAllFinishHappen" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum AND o.ordhapstate = '已发货' AND ROWNUM<=#{param1}) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountFinishHappen" resultType="java.lang.Integer">
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordhapstate = '已发货'
+	</select> 
+	<!-- 分页显示全部未发货记录 -->
+	
+	<select id="findAllNoHappen" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum AND o.ordhapstate = '未发货' AND ROWNUM<=#{param1}) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountNoHappen" resultType="java.lang.Integer">
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordhapstate = '未发货'
+	</select>
+	<!-- 分页显示全部交易完成记录 -->
+	
+	<select id="findAllFinishTrad" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum AND o.ordtradstate = '交易完成' AND ROWNUM<=#{param1}) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountFinishTrad" resultType="java.lang.Integer">
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordtradstate = '交易完成'
+	</select>   
+	<!-- 分页显示全部正在交易记录 -->
+	
+	<select id="findAllIsTrad" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum AND o.ordtradstate = '正在交易' AND ROWNUM<=#{param1}) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountIsTrad" resultType="java.lang.Integer">
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordtradstate = '正在交易'
+	</select>   
+	<!-- 分页显示全部交易取消记录 -->
+	
+	<select id="findAllCloseTrad" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum o.ordtradstate = '交易取消' AND ROWNUM<=#{param1} AND) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountCloseTrad" resultType="java.lang.Integer" >
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordtradstate = '交易取消'
+	</select> 
+	
+	
+	<update id="updateIOrderInfo" parameterType="java.lang.Integer">
+	     update orderinfo set ordtradstate='交易完成' WHERE ordnumber=#{ordnumber}
+	</update> 
+	<update id="finishOrderInfo" parameterType="OrderInfo">
+	     update orderinfo set ordtradstate='交易完成' WHERE ordnumber=#{ordnumber}
+	</update>   
+	<!--回收站的恢复 -->
+     <update  id="updateOderInfo1" parameterType="java.lang.String">
+        update orderinfo set ordflag='0' where  ordnumber=#{ordnumber}   
+    </update>  
+   
+	 <!--  把订单放入回收站 -->   
+    <update  id="updateOderInfo" parameterType="java.lang.String">
+        update orderinfo set ordflag='1' where  ordnumber=#{value}   
+    </update>
+    
+    
+   <!--从回收站删除  --> 
+	<delete id="deleteOrderInfo"  parameterType="java.lang.String">
+	       DELETE FROM orderinfo WHERE ordnumber=#{value} 	
+	</delete> 
+	
+	 <!--  发货-->   
+    <update  id="upDateHappen" parameterType="java.lang.String">
+        update orderinfo set ordhapstate='已发货' where  ordnumber=#{value}   
+    </update> 
+    
+       
+    <!--退款  -->
+    <update id="backMoney"  parameterType="java.lang.String" >
+        update orderinfo set  ordflag='2',ordpaystate = '退款中' where  ordnumber=#{value}     
+    </update>
+   <!-- 查询退款记录 -->
+    <select id="findBackMoneyByFlag" parameterType="java.util.Map" resultType="java.util.Map">
+		<![CDATA[
+      		SELECT b.goonum,b.goodescribe ,a.ordnumber,a.ordsite,a.orddate,a.ordmoney,a.ordpaystate,a.ordhapstate,a.ordtradstate,a.ordsize,a.ordcolor,a.ordflag
+			  FROM (SELECT RowNum rn,ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno
+			          FROM (
+			          	SELECT ordnumber,orddate,ordpaystate,ordhapstate,ordtradstate,ordcount,goonum,addno,ordflag,ordsize,ordcolor,ordmoney,ordsite,logno 
+			          	FROM orderinfo o where o.userid=#{userid} and o.ordflag='2' ORDER BY o.orddate desc) 
+			         WHERE RowNum<=#{line}) a ,goods b
+			 WHERE a.goonum=b.goonum and rn>#{page} 
+       
+		]]>
+	</select>
+	<select id="getAllCountBackMoney" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordflag = '2' AND userid = #{userid}
+	</select> 
+	<!--  管理员模块查询退款记录  -->
+    <select id="findBackMoneyByFlagAdmin" parameterType="java.lang.Integer" resultMap="OrderInfo_Goods_UserInfo">
+	<![CDATA[
+		SELECT temp.uune,temp.ggde,temp.oody,temp.oosize,temp.oodt,temp.oode,temp.oope,temp.ognm,temp.ousd,temp.oohe,temp.oote,
+		temp.oonr,temp.oose
+		FROM( SELECT ROWNUM rn,o.ordnumber oonr,o.orddate oode,o.ordpaystate oope,o.ordhapstate oohe,o.ordtradstate oote,
+      			o.userid ousd,o.ordcount oodt,o.goonum ognm,o.addno oado,o.ordflag oodg,o.ordsize oosize,o.ordcolor oocr,o.ordmoney oody,
+      			o.logno olgo,o.ordsite oose,u.username uune,g.goodescribe ggde
+      			FROM orderinfo o,userinfo u,goods g 
+      			WHERE o.userid=u.userid AND o.goonum=g.goonum AND ROWNUM<=#{param1} AND o.ordflag = '2' ) temp
+		WHERE temp.rn>#{param2} ORDER BY oode DESC
+	 ]]>
+	</select>
+	<select id="getAllCountBackMoneyAdmin" resultType="java.lang.Integer" >
+		SELECT COUNT(ordnumber) FROM orderinfo WHERE ordflag = '2'
+	</select> 	
+	<!-- 处理退款    -->
+    <update  id="dealWithBackMoney" parameterType="java.lang.String">
+        update orderinfo set ordpaystate='退款成功' where  ordnumber=#{value}   
+    </update>  
+  
+</mapper>

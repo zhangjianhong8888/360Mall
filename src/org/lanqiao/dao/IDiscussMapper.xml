@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lanqiao.dao.IDiscussMapper">
+	<!-- 分页显示全部评价记录 -->
+	<resultMap type="Discuss" id="Discuss_UserInfo_Goods">
+		<result column="ddt" property="distext"/>
+		<result column="ddl" property="dislevel"/>
+		<result column="ddd" property="disdate"/>
+		<association property="userinfo" javaType="UserInfo">
+			<result column="uun" property="username"/>
+		</association>
+		<association property="goods" javaType="Goods">
+			<result column="ggd" property="goodescribe"/>
+			<result column="ggs" property="goosize"/>
+		</association>
+	</resultMap>
+	<select id="findAll" parameterType="java.util.Map" resultMap="Discuss_UserInfo_Goods">
+	<![CDATA[
+		SELECT temp.ddt,temp.ddl,temp.ddd,temp.uun,temp.ggd,temp.ggs
+			FROM
+	 			(SELECT ROWNUM rn,d.distext ddt,d.dislevel ddl,d.disdate ddd,u.username uun,g.goodescribe ggd,g.goosize ggs
+	 			FROM discuss d,userinfo u,goods g 
+	 			WHERE d.userid=u.userid AND d.goonum=g.goonum AND ROWNUM<=#{line}) temp
+	 	WHERE temp.rn>#{page} ORDER BY ddd DESC
+	 ]]>
+	</select>
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT COUNT(disid) FROM discuss
+	</select>
+	
+	
+	<insert id="addDiscussInfo" parameterType="java.util.Map">
+	   INSERT into discuss(disid,distext,disdate,userid,goonum) VALUES(sys_guid(),#{distext},sysdate,#{userid},#{goonum})
+	</insert> 
+</mapper>
+
+

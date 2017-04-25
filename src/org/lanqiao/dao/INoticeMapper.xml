@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.lanqiao.dao.INoticeMapper">
+	
+	<insert id="doCreate" parameterType="Notice">
+		INSERT INTO notice(notid,notitle,notkeyword,notdate,notext,notpeople)
+		VALUES(sys_guid(),#{notitle},#{notkeyword},sysdate,#{notext},#{notpeople})
+	</insert>
+	<!-- 查看历史公告 -->
+	<select id="findAll" parameterType="java.lang.Integer" resultType="Notice">
+	<![CDATA[
+		SELECT notid,notitle,notkeyword,notpeople,notdate 
+		FROM (SELECT ROWNUM rn,notid,notitle,notkeyword,notpeople,notdate 
+				FROM notice 
+				WHERE ROWNUM<=#{param1} AND notflag = '0') temp 
+		WHERE temp.rn>#{param2} 
+	]]>	
+	</select>
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT COUNT(notid) FROM notice WHERE notflag = '0'
+	</select>
+	<!-- 查看回收站公告 -->
+	<select id="findAllPurge" parameterType="java.lang.Integer" resultType="Notice">
+	<![CDATA[
+		SELECT notid,notitle,notkeyword,notpeople,notdate 
+		FROM (SELECT ROWNUM rn,notid,notitle,notkeyword,notpeople,notdate 
+				FROM notice 
+				WHERE ROWNUM<=#{param1} AND notflag = '1') temp 
+		WHERE temp.rn>#{param2} 
+	]]>	
+	</select>
+	<select id="getAllCountPurge" resultType="java.lang.Integer">
+		SELECT COUNT(notid) FROM notice WHERE notflag = '1'
+	</select>
+	<!-- 放入回收站 -->
+	<update id="doUpdate" parameterType="java.lang.String">
+		UPDATE notice SET notflag = '1' WHERE notid=#{value}
+	</update>
+	<!-- 从回收站删除 -->
+	<delete id="doDelete" parameterType="java.lang.String">
+		DELETE notice WHERE notid=#{value} AND notflag = '1'
+	</delete>
+	<!-- 还原 -->
+	<update id="doUpdateRestore" parameterType="java.lang.String">
+		UPDATE notice SET notflag = '0' WHERE notid=#{value}
+	</update>
+	<select id="findById" parameterType="java.lang.String" resultType="Notice">
+		SELECT notid,notitle,notkeyword,notpeople,notdate,notext FROM notice WHERE notid = #{value}
+	</select>
+	<!-- 清空回收站 -->
+	<delete id="emptyPurge">
+		DELETE notice WHERE notflag = '1'
+	</delete>
+</mapper>
+
+

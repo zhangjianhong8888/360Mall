@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lanqiao.dao.IAdminMapper">
+	<!-- 管理员登录 -->
+	<select id="findByAdmnameAndPassword" parameterType="Admin" resultType="Admin">
+		SELECT admname,password FROM admin WHERE admname=#{admname} AND password=#{password}
+	</select>
+	
+	<!-- 商品详细信息 -->
+	<resultMap type="OrderInfo" id="OrderInfo_Goods_Address">
+		<result column="ordnumber" property="ordnumber"/>
+		<result column="orddate" property="orddate"/>
+	
+		<result column="ordcount" property="ordcount"/>
+		<result column="ordsize" property="ordsize"/>
+		<result column="ordcolor" property="ordcolor"/>
+		<result column="ordmoney" property="ordmoney"/>
+		<result column="ordsite" property="ordsite"/>
+		<association property="address" javaType="Address">
+			<result column="addname" property="addname"/>
+			<result column="addtel" property="addtel"/>
+			<result column="addcode" property="addcode"/>
+			<result column="addprovince" property="addprovince"/>
+			<result column="addcity" property="addcity"/>
+			<result column="addrea" property="addrea"/>
+			<result column="addstreet" property="addstreet"/>
+		</association>
+		<association property="goods" javaType="Goods">
+			<result column="goodescribe" property="goodescribe"/>
+			<result column="goobrand" property="goobrand"/>
+		</association>		
+	</resultMap>
+	<select id="findDealOrderInfo" parameterType="java.lang.String" resultMap="OrderInfo_Goods_Address">	
+		SELECT o.ordnumber,o.orddate,o.ordcount,o.ordsize,o.ordcolor,o.ordmoney,o.ordsite,
+		g.goodescribe,g.goobrand,
+		a.addname,a.addtel,a.addcode,a.addprovince,a.addcity,a.addrea,a.addstreet 
+		FROM orderinfo o,goods g,address a 
+		WHERE o.goonum=g.goonum AND o.addno=a.addno AND o.ordnumber=#{value}
+	</select>
+	
+</mapper>
+
+

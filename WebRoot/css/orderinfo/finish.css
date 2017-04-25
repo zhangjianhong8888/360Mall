@@ -1,0 +1,48 @@
+@import url(http://fonts.useso.com/css?family=Roboto:400,700);
+
+
+.btn-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+  color: #222;
+  -webkit-transform: translateZ(-1px) rotateX(360deg);
+          transform: translateZ(-1px) rotateX(360deg);
+  overflow: hidden;
+  transition: box-shadow 0.8s ease; }
+
+.btn-back p {
+  margin-top: 27px;
+  margin-bottom: 25px; }
+
+.btn-back button {
+  padding: 12px 20px;
+  width: 30%;
+  margin: 0 5px;
+  background-color: transparent;
+  border: 0;
+  border-radius: 2px;
+  font-size: 1em;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  transition: background 0.15s ease; }
+  .btn-back button:focus {
+    outline: 0; }
+  .btn-back button.yes {
+    background-color: #2196F3;
+    color: #fff; }
+    .btn-back button.yes:hover {
+      background-color: #51aef6; }
+  .btn-back button.no {
+    color: #2196F3; }
+    .btn-back button.no:hover {
+      background-color: #ddd; }
+
+.btn.is-open .btn-back {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); }
+
+.btn[data-direction="left"] .btn-back, .btn[data-direction="right"] .btn-back {
+  -webkit-transform: translateZ(-1px) rotateY(180deg);
+          transform: translateZ(-1px) rotateY(180deg); }

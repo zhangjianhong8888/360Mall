@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lanqiao.dao.IShoppingMapper">
+<select id="findGoods" parameterType="UserInfo"  resultType="java.util.Map">
+ SELECT g.GOOSITE,g.GOOPRICE,g.GOODESCRIBE,s.SHONUMBER,s.SHOPPINGID,s.USERID  FROM goods g,shopping s  WHERE g.goonum = s.goonum and s.userid = #{userid} 
+</select>	
+<delete id="delete" parameterType="java.lang.String">
+ DELETE FROM shopping WHERE SHOPPINGID=#{shoppingid}
+</delete>
+<select id="findUserInfoById" parameterType="java.lang.String" resultType="Address">
+ SELECT a.addname,a.addtel,a.addphone, a.addprovince,a.addcity,a.addrea,a.addstreet,a.addcode,a.addno FROM address a  WHERE a.userid=#{userid}
+</select>
+<select id="orderlist" parameterType="UserInfo"  resultType="java.util.Map">
+   SELECT g.GOOSITE,g.GOOPRICE,g.GOODESCRIBE,s.SHONUMBER,s.userid, g.GOOCOLOR,g.GOOSIZE,g.GOOBRAND  FROM goods g,shopping s   WHERE s.goonum = g.goonum and s.userid= #{userid}
+</select>
+<insert id="addShopping" parameterType="java.util.Map">
+  INSERT INTO ORDERINFO (ORDNUMBER,ORDDATE,USERID,ORDCOUNT,GOONUM,ADDNO,ORDSIZE,ORDCOLOR,ORDMONEY,LOGNO,ORDSITE)
+VALUES(SYS_GUID(),SYSDATE,#{USERID},#{SHONUMBER},#{GOONUM},#{ADDNO},#{GOOSIZE},#{GOOCOLOR},#{ORDMONEY},SYS_GUID(),#{GOOSITE})
+</insert>
+<delete id="deleteShopping" parameterType="java.lang.String">
+DELETE FROM shopping WHERE userid=#{userid}
+</delete>
+	
+<update id="update" parameterType="Shopping" >
+ update shopping set shonumber=#{shonumber} where shoppingid = #{shoppingid} 
+</update>
+<select id="findGoodsById"  parameterType="UserInfo" resultType="java.util.Map">
+ select *  FROM goods g,shopping s  WHERE g.goonum = s.goonum and s.userid = #{userid} 
+</select>
+  <insert id="addAddressInfo" parameterType="Address">   
+		insert into address(addno,userid,addname,addtel,addcode,addprovince,addcity,addrea,addstreet)
+		 values(sys_guid(),#{userid},#{addname},#{addtel},#{addcode},#{addprovince},#{addcity},#{addrea},#{addstreet})
+    </insert>
+<update id="updateState" parameterType="UserInfo" >
+  update orderinfo set ordpaystate='已付款' where userid= #{userid}
+</update>
+</mapper>
+
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lanqiao.dao.IAddressMapper">
+    <!-- 查询所有数据 -->
+    <select id="findAllAddress"  parameterType="java.util.Map" resultType="Address">
+      <!-- <  select addno,addname,addprovince,addcity,addrea,addstreet,addcode,addtel,userid from  address
+         where userid=#{userid} -->
+         <![CDATA[
+      		SELECT addno,addname,addprovince,addcity,addrea,addstreet,addcode,addtel,userid
+			  FROM (SELECT RowNum rn,addno,addname,addprovince,addcity,addrea,addstreet,addcode,addtel,userid
+			          FROM (
+			          	SELECT addno,addname,addprovince,addcity,addrea,addstreet,addcode,addtel,userid
+			          	FROM  address where userid=#{userid}) 
+			         WHERE RowNum<=#{a})
+			 WHERE  rn>#{b} 
+       
+			 ]]>                        
+    </select>
+    <select id="getAllCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+    	SELECT COUNT(addno) FROM ADDRESS WHERE userid=#{userid}
+    </select>
+    <!--编辑数据  -->
+    <select id="editAddress1"  parameterType="java.lang.String" resultType="Address">
+        select addno,addname,addprovince,addcity,addrea,addstreet,addcode,addtel,userid from  address
+         where addno=#{addno}
+    </select>
+    
+    <update id="editAddress"  parameterType="Address" > 
+        update address set addname=#{addname},addprovince=#{addprovince},addcity=#{addcity},addrea=#{addrea},    
+        addcode=#{addcode},addstreet=#{addstreet},addtel=#{addtel} where addno=#{addno}
+    </update>
+    
+    
+  <!-- 删去数据 -->
+     
+	<delete id="deleteAddress"  parameterType="java.lang.String">
+	       DELETE FROM address WHERE addno=#{addno}	
+	</delete>
+	
+ <!-- 增加数据 -->	
+      <insert id="addAddressInfo" parameterType="Address">   
+		insert into address(addno,userid,addname,addtel,addcode,addprovince,addcity,addrea,addstreet)
+		 values(sys_guid(),#{userid},#{addname},#{addtel},#{addcode},#{addprovince},#{addcity},#{addrea},#{addstreet})
+    </insert>
+    	
+    	
+    	
+    	
+</mapper>
+
+

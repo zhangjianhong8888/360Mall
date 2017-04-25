@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.lanqiao.dao.IUserInfoMapper">
+
+	<insert id="addNewIUserInfo" parameterType="UserInfo">
+		<selectKey resultType="java.lang.String" order="BEFORE" keyProperty="userid">  
+             SELECT sys_guid() as userid from DUAL  
+        </selectKey>
+	    insert into userinfo(userid,username,password,useremail,usertel,userdate) values(#{userid},#{username},#{password},#{useremail},#{usertel},sysdate)
+	</insert>
+	
+	<select id="findUserInfoByEmail" parameterType="UserInfo" resultType="UserInfo">
+	    select userid,username,password,useremail,usertel from userinfo where useremail = #{useremail}
+	</select>
+	
+	<select id="findUserInfoByName" parameterType="UserInfo" resultType="UserInfo">
+	    select userid,username,password,useremail,usertel from userinfo where username = #{username}
+	</select>
+	  
+	<select id="findUserByPasswordAnduserNameOruserEmail" parameterType="UserInfo" resultType="UserInfo">
+	      SELECT password,userid,username,useremail From userinfo 
+ 			where (username=#{username} and password = #{password}) 
+ 			or (useremail = #{username} and password = #{password}) 
+ 			or (usertel = #{username} and password = #{password})
+   </select>
+   
+   <select id="findAllCount" resultType="java.lang.Integer" parameterType="UserInfo">
+    	SELECT COUNT(*) FROM shopping where userid = #{userid}
+    </select>	
+	<select id="findAll" parameterType="java.lang.Integer" resultType="UserInfo">
+		<![CDATA[
+		SELECT userid,username,useremail,usertel,userdate 
+		FROM (SELECT ROWNUM rn,userid,username,useremail,usertel,userdate 
+				FROM userinfo 
+				WHERE ROWNUM<=#{param1}) temp 
+		WHERE temp.rn>#{param2}  
+	]]>	
+	</select>
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT COUNT(userid) FROM userinfo 
+	</select>
+	<update id="doUpdateInfo" parameterType="UserInfo">
+		UPDATE userinfo SET username = #{username},password = #{password},usertel = #{usertel} WHERE userid=#{userid}
+	</update>
+	<update id="updatePassword" parameterType="UserInfo">
+		UPDATE userinfo SET	password = #{password} WHERE useremail=#{useremail}
+	</update>
+</mapper>
+
+
